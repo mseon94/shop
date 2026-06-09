@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>상품 등록</title>
+
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/pdm/pdm_write.css}">
+</head>
+
+<body>
+
+    <div th:replace="layout/header :: headerFragment"></div>
+
+    <div class="container">
+
+        <div class="top-area">
+            <h2>상품 등록</h2>
+        </div>
+
+        <div class="form-container">
+            <form id="productForm" th:action="@{/pdm}" method="post" enctype="multipart/form-data">
+
+                <div class="form-group">
+                    <label for="category">카테고리</label>
+                    <select id="category" name="category" required>
+                        <option value="">카테고리를 선택하세요</option>
+                        <option value="ELECTRONICS">전자기기</option>
+                        <option value="CLOTHES">의류</option>
+                        <option value="FOOD">식품</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="name">상품명</label>
+                    <input type="text" id="name" name="name" required placeholder="상품명을 입력하세요">
+                </div>
+
+                <div class="form-group">
+                    <label for="price">상품가격 (원)</label>
+                    <input type="number" id="price" name="price" min="0" required placeholder="가격을 입력하세요">
+                </div>
+
+                <div class="form-group">
+                    <label for="stock">상품재고 (개)</label>
+                    <input type="number" id="stock" name="stock" min="0" required placeholder="재고 수량을 입력하세요">
+                </div>
+
+                <div class="form-group">
+                    <label for="status">판매상태</label>
+                    <select id="status" name="status" required>
+                        <option value="FOR_SALE">판매중</option>
+                        <option value="SOLD_OUT">품절</option>
+                        <option value="STOPPED">판매중지</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="content">상품설명</label>
+                    <textarea id="content" name="content" required placeholder="상품 상세 설명을 입력하세요"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>상품 이미지</label>
+                    <div class="file-area" id="dropZone">
+                        <p>이미지 파일을 드래그 하세요</p>
+                        <p>또는</p>
+                        <input type="file" id="fileInput" name="uploadFile" multiple accept="image/*" hidden>
+                        <button type="button">
+                            + 이미지 추가
+                        </button>
+                    </div>
+
+                    <div id="previewList" class="preview-list"></div>
+                </div>
+
+                <div class="form-btn-box">
+                    <button type="submit" class="save-btn">등록하기</button>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+
+    <div th:replace="layout/footer :: footerFragment"></div>
+
+    <script>
+        let selectedFiles = [];
+
+        const fileInput = document.getElementById("fileInput");
+        const dropZone = document.getElementById("dropZone");
+        const previewList = document.getElementById("previewList");
+        const productForm = document.getElementById("productForm");
+
+        dropZone.addEventListener("click", (e) => {
+            if (e.target.tagName !== "BUTTON") {
+                fileInput.click();
+            }
+        });
+        
+        dropZone.querySelector("button").addEventListener("click", (e) => {
+            e.stopPropagation();
+            fileInput.click();
+        });
+
+        fileInput.addEventListener("change", function (e) {
+            addFiles(e.target.files);
+        });
+
+        dropZone.addEventListener("dragover", function (e) {
+            e.preventDefault();
+            dropZone.classList.add("dragover");
+        });
+
+        dropZone.addEventListener("dragleave", function (e) {
+            e.preventDefault();
+            dropZone.classList.remove("dragover");
+        });
+
+        dropZone.addEventListener("drop", function (e) {
+            e.preventDefault();
+            dropZone.classList.remove("dragover");
+            addFiles(e.dataTransfer.files);
+        });
+
+        function addFiles(files) {
+            for (let file of files) {
+                if (!file.type.startsWith("image/")) continue;
+                selectedFiles.push(file);
+            }
+            syncInput();
+            renderPreview();
+        }
+
+        function syncInput() {
+            const dataTransfer = new DataTransfer();
+            selectedFiles.forEach(file => {
+                dataTransfer.items.add(file);
+            });
+            fileInput.files = dataTransfer.files;
+        }
+
+        function renderPreview() {
+            previewList.innerHTML = "";
+            selectedFiles.forEach((file, index) => {
+                const imgUrl = URL.createObjectURL(file);
+                const div = document.createElement("div");
+                div.classList.add("preview-item");
+                div.innerHTML = `
+                    <img src="${imgUrl}">
+                    <button type="button" class="remove-btn" onclick="removeFile(${index})">x</button>
+                `;
+                previewList.appendChild(div);
+            });
+        }
+
+        function removeFile(index) {
+            selectedFiles.splice(index, 1);
+            syncInput();
+            renderPreview();
+        }
+
+        productForm.addEventListener("submit", function(e) {
+            console.log("서버로 전송되는 이미지 개수:", fileInput.files.length);
+        });
+    </script>
+
+</body>
+</html>

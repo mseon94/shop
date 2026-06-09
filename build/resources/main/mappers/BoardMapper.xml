@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.human.shop.mapper.BoardMapper">
+    <!--유동성있는 컬럼을 받아와야 함 = parameterType
+        받을 거 없이 완성됨 = resultType-->
+
+    <!-- 게시글 등록 -->
+    <insert id="insertBoard"
+            parameterType="com.human.shop.vo.BoardVO"       
+            useGeneratedKeys="true"
+            keyProperty="id">
+
+        INSERT INTO board (
+            writer,
+            title,
+            content,
+            created_at,
+            updated_at
+        )
+        VALUES (
+            #{writer},
+            #{title},
+            #{content},
+            NOW(),
+            NOW()
+        )
+
+    </insert>
+
+
+    <!-- 게시글 전체 조회 -->
+    <select id="selectBoardList"
+            resultType="com.human.shop.vo.BoardVO"> <!--여러 개면 알아서 리스트로 받아줌-->
+
+        SELECT
+            id,
+            writer,
+            title,
+            content,
+            view_count,
+            created_at,
+            updated_at,
+            deleted
+        FROM board
+        WHERE deleted = 0
+        ORDER BY id DESC
+
+    </select>
+
+
+
+    <!-- 조회수 증가 -->
+    <update id="updateViewCount"
+            parameterType="long">
+
+        UPDATE board
+        SET view_count = view_count + 1
+        WHERE id = #{id}
+
+    </update>
+
+    <update id="deleteById"
+            parameterType="long">
+    
+        UPDATE board 
+        SET 
+            deleted = 1, 
+            updated_at = now() 
+        WHERE id = #{id}
+
+    </update>
+
+    <!-- 글 한개 가져오기-->
+    <select id="getBoardById"
+            parameterType="long"
+            resultType="com.human.shop.vo.BoardVO">
+        SELECT *
+        FROM board
+        WHERE id = #{id} and deleted=0
+    </select>
+
+    <!-- 게시글 수정-->
+    <update id="updateById"
+            parameterType="BoardVO">
+
+        UPDATE board
+        SET 
+            title = #{title},
+            content = #{content},
+            updated_at = now()
+        WHERE id = #{id}
+
+    </update>
+
+
+
+</mapper>

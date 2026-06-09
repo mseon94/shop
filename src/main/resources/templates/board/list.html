@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>게시판</title>
+
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/board.css}">
+</head>
+
+<body>
+
+    <!-- header -->
+    <div th:replace="layout/header :: headerFragment"></div>
+
+    <div class="container">
+
+        <div class="top-area">
+            <h2>게시판</h2>
+        </div>
+        <div class="btn-box">
+            <!-- 클라이언트 요청 중 <a>, location.href 2개 습득 -> 이 2개는 모두 get 방식-->
+            <button class="write-btn" onclick="location.href='/boards/write'">글쓰기</button>
+        </div>
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th style="width: 8%;">번호</th>
+                    <th style="width: 48%;">제목</th>
+                    <th style="width: 20%;">작성자</th>
+                    <th style="width: 12%;">작성일</th>
+                    <th syyle="width: 12%;">관리</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <!-- 컨트롤러가 boardlist 변수로 리스트를 넘겼다
+                 라임리프가 boardlist 사이즈만큼 반복해서 tr을 만든다 -->
+                <tr th:each="board : ${boardlist}">  <!--boardlist의 값을 가져와서 board 변수에 저장. 
+                                                         board 변수는 boardVo 객체의 주소-->
+                    <td th:text="${board.id}"></td>  <!-- id는 vo객체의 getter-->
+                    <td>
+                        <a th:href="@{/boards/{id}(id=${board.id})}" th:text="${board.title}">제목</a>
+
+                    </td>                    
+                    <td th:text="${board.writer}"></td>
+                    <td th:text="${#strings.replace(board.createdAt, 'T', ' ')}"></td>
+                    <td>
+                        <button class="action-btn edit-btn" th:onclick="|location.href='/boards/edit/${board.id}'|">
+                            수정
+                        </button>
+                        <button class="action-btn delete-btn" th:onclick="|deleteBoard(${board.id})|">
+                            삭제
+                        </button>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+
+        <!-- 페이징 -->
+        <div class="paging">
+
+            <a href="#">이전</a>
+
+            <a href="#" class="active">1</a>
+            <a href="#">2</a>
+            <a href="#">3</a>
+
+            <a href="#">다음</a>
+
+        </div>
+
+    </div>
+
+    <div th:replace="layout/footer :: footerFragment"></div>
+
+    <script>
+
+        function deleteBoard(id) {
+
+            const result = confirm("삭제하시겠습니까?");
+
+            if (result) {
+                location.href = "/boards/delete/" + id;
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.human.shop.mapper.PdmMapper">
+
+<insert id="insertProduct"
+        parameterType="PdmVO"
+        useGeneratedKeys="true"
+        keyProperty="id">
+    
+    INSERT INTO product(
+        category,
+        name,
+        price,
+        stock,
+        status,
+        content,
+        created_at,
+        updated_at
+    )
+
+    VALUES(
+        #{category},
+        #{name},
+        #{price},
+        #{stock},
+        #{status},
+        #{content},
+        NOW(),
+        NOW()
+    )
+</insert>
+
+<select id="selectAllProduct"
+        resultType="com.human.shop.vo.PdmVO">
+
+    SELECT *
+    FROM product
+    WHERE deleted=0
+
+
+</select>
+
+<select id="selectById"
+        parameterType="long"
+        resultType="com.human.shop.vo.PdmVO">
+        
+    SELECT *
+    FROM product
+    WHERE id=#{id} and deleted=0
+
+</select>
+</mapper>

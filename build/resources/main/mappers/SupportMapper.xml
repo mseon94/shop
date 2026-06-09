@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.human.shop.mapper.SupportMapper">
+
+    <insert id="insertSupport"
+        parameterType="com.human.shop.vo.SupportVO"
+        useGeneratedKeys="true"
+        keyProperty="id">
+
+        insert into support (
+            writer,
+            email,
+            password,
+            title,
+            content,
+            created_at,
+            updated_at
+        )
+
+        VALUES(
+            #{writer},
+            #{email},
+            #{password},
+            #{title},
+            #{content},
+            NOW(),
+            NOW()
+        )
+    </insert>
+
+    <select id="selectSupportList"
+            resultType="com.human.shop.vo.SupportVO">
+
+        select
+            id,
+            writer,
+            email,
+            password,
+            title,
+            content,
+            created_at,
+            updated_at,
+            completed,
+            deleted
+        from support
+        where deleted = 0
+        order by id desc
+    
+    </select>
+</mapper>

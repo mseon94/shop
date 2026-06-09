@@ -1,0 +1,198 @@
+/* ==========================================================================
+   1. 기본 본문 레이아웃 스타일 (통일)
+   ========================================================================== */
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #f9f9f9;
+    color: hwb(0 20% 80%);
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+/* 본문 정렬을 위한 공통 컨테이너 */
+.container {
+    max-width: 1200px;
+    width: 100%;
+    margin: 40px auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+/* 상단 영역 스타일 */
+.top-area {
+    border-bottom: 2px solid #333;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+
+.top-area h2 {
+    margin: 0;
+    color: #222;
+    font-size: 24px;
+}
+
+/* ==========================================================================
+   2. 게시글 작성 폼 전용 스타일
+   ========================================================================== */
+.form-container {
+    max-width: 700px;
+    width: 100%;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    margin: 20px auto 40px auto;
+    box-sizing: border-box;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 15px;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 8px;
+    text-align: left;
+}
+
+.form-group input[type="text"],
+.form-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    color: #333;
+    font-size: 15px;
+    border-radius: 4px;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.form-group textarea {
+    height: 250px;
+    resize: none;
+    line-height: 1.6;
+}
+
+/* ==========================================================================
+   3. 파일 드래그 앤 드롭 영역 스타일
+   ========================================================================== */
+.file-area {
+    border: 2px dashed #ccc;
+    padding: 30px 20px;
+    text-align: center;
+    background-color: #fafafa;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.file-area:hover, .file-area.dragover {
+    background-color: #f0f6ff;
+    border-color: #007bff;
+}
+
+.file-area p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #666;
+}
+
+.file-area button {
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: #333;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.file-area button:hover {
+    background-color: #f4f4f4;
+    border-color: #888;
+}
+
+/* 미리보기 영역 */
+.preview-list {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 15px;
+    gap: 10px;
+}
+
+.preview-item {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.preview-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.remove-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    padding: 0;
+}
+
+/* ==========================================================================
+   4. 하단 버튼 구역 스타일
+   ========================================================================== */
+.form-btn-box {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 30px;
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+}
+
+.form-btn-box .save-btn {
+    padding: 10px 24px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+}
+
+.form-btn-box .save-btn:hover {
+    background-color: #0056b3;
+}
